@@ -7,6 +7,8 @@ import 'package:todo_app/modules/done_tasks_screen/done_tasks_screen.dart';
 import 'package:todo_app/modules/new_tasks_screen/new_tasks_screen.dart';
 import 'package:todo_app/shared/components/components.dart';
 
+import '../../shared/components/constants.dart';
+
 class HomeLayout extends StatefulWidget {
   @override
   State<HomeLayout> createState() => _HomeLayoutState();
@@ -23,7 +25,7 @@ class _HomeLayoutState extends State<HomeLayout> {
   GlobalKey<ScaffoldState> scafflodKey = GlobalKey<ScaffoldState>();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   int currentIndex = 0;
-  List<Map> databaseList = [];
+
   List<String> titles = [
     "New Tasks",
     "Done Tasks",
@@ -74,7 +76,7 @@ class _HomeLayoutState extends State<HomeLayout> {
         },
         currentIndex: currentIndex,
       ),
-      body: screens[currentIndex],
+      body: databaseList.length <0? Center(child: CircularProgressIndicator()) :screens[currentIndex],
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           if (isbottomSheetShown) {

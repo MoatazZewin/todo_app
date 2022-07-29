@@ -37,3 +37,38 @@ Widget defaultTextFormField({
     ),
   );
 }
+
+Widget defaultListItem(Map task)
+{
+  return Padding(
+    padding: const EdgeInsets.all(20.0),
+    child: Row(
+      children:
+      [
+        CircleAvatar(
+          radius: 35.0,
+          child: Text("${task['time']}",
+          ),
+        ),
+        SizedBox(width: 20.0,),
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children:
+          [
+            Text("${task['title']}",
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text("${task['date']}",
+              style: TextStyle(
+                color: Colors.grey,
+              ),),
+          ],
+        ),
+      ],
+    ),
+  );
+}
