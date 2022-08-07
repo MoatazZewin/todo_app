@@ -15,19 +15,9 @@ class ArchivedTasksScreen extends StatelessWidget {
       BlocConsumer<TodoCubit, TodoStates>(
         listener:(BuildContext context, state){} ,
         builder: (BuildContext context, state){
-          return ListView.separated(
-              itemBuilder: (context, index )=> defaultListItem(TodoCubit.get(context).databaseArchivedTasks[index],context),
-              separatorBuilder: (context, index ) => Padding(
-                padding: const EdgeInsetsDirectional.only(
-                  start: 30.0,
-                ),
-                child: Container(
-                  width: double.infinity,
-                  height: 1.0,
-                  color: Colors.grey,
-                ),
-              ),
-              itemCount: TodoCubit.get(context).databaseArchivedTasks.length);
+          var tasks = TodoCubit.get(context).databaseArchivedTasks;
+          return taskBuilder(tasks: tasks);
+
 
         },
 

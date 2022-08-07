@@ -127,4 +127,18 @@ class TodoCubit extends Cubit<TodoStates>{
   }
 
 
+  deleteData({
+    required int id
+  })
+  {
+    dataBase.rawDelete('DELETE FROM tasks WHERE id = ?', [id])
+        .then((value) {
+      emit(TodoDeleteDateBase());
+      getDatabase(dataBase);
+
+    });
+
+  }
+
+
 }

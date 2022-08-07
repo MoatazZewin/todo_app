@@ -16,19 +16,8 @@ class NewTasksScreen extends StatelessWidget {
       BlocConsumer<TodoCubit, TodoStates>(
         listener:(BuildContext context, state){} ,
         builder: (BuildContext context, state){
-          return ListView.separated(
-              itemBuilder: (context, index )=> defaultListItem(TodoCubit.get(context).databaseNewTasks[index],context),
-              separatorBuilder: (context, index ) => Padding(
-                padding: const EdgeInsetsDirectional.only(
-                  start: 30.0,
-                ),
-                child: Container(
-                  width: double.infinity,
-                  height: 1.0,
-                  color: Colors.grey,
-                ),
-              ),
-              itemCount: TodoCubit.get(context).databaseNewTasks.length);
+          var tasks = TodoCubit.get(context).databaseNewTasks;
+          return taskBuilder(tasks: tasks);
 
         },
 
