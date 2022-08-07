@@ -68,9 +68,7 @@ class HomeLayout extends StatelessWidget {
               },
               currentIndex: cubit.currentIndex,
             ),
-            body: state is TodoGetDataBaseLoading
-                ? Center(child: CircularProgressIndicator())
-                : cubit.screens[cubit.currentIndex],
+            body:cubit.screens[cubit.currentIndex],
             floatingActionButton: FloatingActionButton(
               onPressed: () {
                 if (cubit.isbottomSheetShown) {

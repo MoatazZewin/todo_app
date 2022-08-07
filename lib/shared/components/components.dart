@@ -2,6 +2,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../cubit/todo_cubit.dart';
+
 Widget defaultTextFormField({
   required String label,
   required TextEditingController controller,
@@ -38,7 +40,7 @@ Widget defaultTextFormField({
   );
 }
 
-Widget defaultListItem(Map task)
+Widget defaultListItem(Map task, context)
 {
   return Padding(
     padding: const EdgeInsets.all(20.0),
@@ -51,23 +53,44 @@ Widget defaultListItem(Map task)
           ),
         ),
         SizedBox(width: 20.0,),
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children:
-          [
-            Text("${task['title']}",
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
+        Expanded(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children:
+            [
+              Text("${task['title']}",
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            Text("${task['date']}",
-              style: TextStyle(
-                color: Colors.grey,
-              ),),
-          ],
+              Text("${task['date']}",
+                style: TextStyle(
+                  color: Colors.grey,
+                ),),
+            ],
+          ),
         ),
+        SizedBox(width: 10.0,),
+        IconButton(onPressed: (){
+          TodoCubit.get(context).updateData(status: "done", id: task["id"]);
+
+        },
+            icon: Icon(
+          Icons.check_box,
+              color: Colors.green,
+        ),
+        ),
+        SizedBox(width: 5.0,),
+        IconButton(onPressed: (){
+          TodoCubit.get(context).updateData(status: "archived", id: task["id"]);
+        },
+          icon: Icon(
+            Icons.archive,
+          ),
+        ),
+
       ],
     ),
   );

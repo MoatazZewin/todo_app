@@ -17,7 +17,7 @@ class NewTasksScreen extends StatelessWidget {
         listener:(BuildContext context, state){} ,
         builder: (BuildContext context, state){
           return ListView.separated(
-              itemBuilder: (context, index )=> defaultListItem(TodoCubit.get(context).databaseList[index]),
+              itemBuilder: (context, index )=> defaultListItem(TodoCubit.get(context).databaseNewTasks[index],context),
               separatorBuilder: (context, index ) => Padding(
                 padding: const EdgeInsetsDirectional.only(
                   start: 30.0,
@@ -28,7 +28,7 @@ class NewTasksScreen extends StatelessWidget {
                   color: Colors.grey,
                 ),
               ),
-              itemCount: TodoCubit.get(context).databaseList.length);
+              itemCount: TodoCubit.get(context).databaseNewTasks.length);
 
         },
 

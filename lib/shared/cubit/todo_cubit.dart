@@ -17,7 +17,9 @@ class TodoCubit extends Cubit<TodoStates>{
   bool isbottomSheetShown = false;
   IconData fabIcon = Icons.edit;
   late Database dataBase;
-  List<Map> databaseList = [];
+  List<Map> databaseNewTasks = [];
+  List<Map> databaseDoneTasks = [];
+  List<Map> databaseArchivedTasks = [];
 
   List<String> titles = [
     "New Tasks",
@@ -59,11 +61,7 @@ class TodoCubit extends Cubit<TodoStates>{
         }, onOpen: (database) {
            dataBase =database;
           print("database is opened");
-          getDatabase(database).then((value) {
-            databaseList = value;
-            print(databaseList);
-            emit(TodoGetDatabaseState());
-          });
+          getDatabase(dataBase);
         }).then((value) => dataBase =value);
   } //method createDatebase
 
@@ -72,6 +70,8 @@ class TodoCubit extends Cubit<TodoStates>{
     required String date,
     required String time,
   }) async {
+
+
      await dataBase.transaction((txn) async {
       txn
           .rawInsert(
@@ -79,11 +79,8 @@ class TodoCubit extends Cubit<TodoStates>{
           .then((value) {
         print("$value inserted successfully");
         emit(TodoInsertDatabaseState());
-        getDatabase(dataBase).then((value) {
-          databaseList = value;
-          print(databaseList);
-          emit(TodoGetDatabaseState());
-        });
+        getDatabase(dataBase);
+
       } )
           .catchError((onError) {
         print(onError.toString());
@@ -91,10 +88,42 @@ class TodoCubit extends Cubit<TodoStates>{
     });
   } //method insertToDatabase
 
-  Future<List<Map>> getDatabase(dataBase) async {
+   getDatabase(dataBase)  {
+      databaseNewTasks = [];
+      databaseDoneTasks = [];
+      databaseArchivedTasks = [];
 
-     emit(TodoGetDataBaseLoading());
-    return await dataBase.rawQuery("select * from tasks");
+
+     dataBase.rawQuery("select * from tasks").then((value){
+       value.forEach((element){
+         if(element["status"] == "new")
+           {
+             databaseNewTasks.add(element);
+
+           }else if(element["status"] == "done")
+             {
+               databaseDoneTasks.add(element);
+             }else
+               databaseArchivedTasks.add(element);
+       });
+       print(databaseNewTasks);
+       emit(TodoGetDatabaseState());
+
+     });
+  }
+
+  updateData({
+    required String status,
+    required int id
+})
+  {
+    dataBase.rawUpdate(
+        'UPDATE tasks SET status = ? WHERE id = ?',
+        [status,  id]).then((value) {
+          getDatabase(dataBase);
+         emit(TodoUpdateDataBase());
+    });
+
   }
 
 
